@@ -1,0 +1,113 @@
+-------------------------------------------------------------------------------
+Test set: quantityMeasurementAppTest.QuantityTest
+-------------------------------------------------------------------------------
+Tests run: 41, Failures: 8, Errors: 0, Skipped: 0, Time elapsed: 0.462 s <<< FAILURE! -- in quantityMeasurementAppTest.QuantityTest
+quantityMeasurementAppTest.QuantityTest.testTemperatureCrossUnitAdditionAttempt -- Time elapsed: 0.023 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.UnsupportedOperationException> but was: <java.lang.IllegalArgumentException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureCrossUnitAdditionAttempt(QuantityTest.java:367)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+Caused by: java.lang.IllegalArgumentException: Cannot operate on different measurement categories
+	at UtilityClasses.Quantity.validateArithmeticOperands(Quantity.java:112)
+	at UtilityClasses.Quantity.add(Quantity.java:136)
+	at UtilityClasses.Quantity.add(Quantity.java:132)
+	at quantityMeasurementAppTest.QuantityTest.lambda$testTemperatureCrossUnitAdditionAttempt$6(QuantityTest.java:368)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 6 more
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_100Celsius212Fahrenheit -- Time elapsed: 0.010 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(100.0, CELSIUS)> but was: <Quantity(212.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_100Celsius212Fahrenheit(QuantityTest.java:41)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureConversionEdgeCase_VerySmallDifference -- Time elapsed: 0.003 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(0.0, CELSIUS)> but was: <Quantity(1.0E-9, CELSIUS)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureConversionEdgeCase_VerySmallDifference(QuantityTest.java:341)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureIntegrationWithGenericQuantity -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(100.0, CELSIUS)> but was: <Quantity(212.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureIntegrationWithGenericQuantity(QuantityTest.java:402)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_Negative40Equal -- Time elapsed: 0.009 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(-40.0, CELSIUS)> but was: <Quantity(-40.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_Negative40Equal(QuantityTest.java:49)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_SymmetricProperty -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(0.0, CELSIUS)> but was: <Quantity(32.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_SymmetricProperty(QuantityTest.java:59)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_0Celsius32Fahrenheit -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(0.0, CELSIUS)> but was: <Quantity(32.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureEquality_CelsiusToFahrenheit_0Celsius32Fahrenheit(QuantityTest.java:34)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+quantityMeasurementAppTest.QuantityTest.testTemperatureConversionPrecision_Epsilon -- Time elapsed: 0.003 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Quantity(50.0, CELSIUS)> but was: <Quantity(122.0, FAHRENHEIT)>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at quantityMeasurementAppTest.QuantityTest.testTemperatureConversionPrecision_Epsilon(QuantityTest.java:333)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
