@@ -1,0 +1,6 @@
+target/
+dump/
+.settings/
+.classpath
+.project
+
