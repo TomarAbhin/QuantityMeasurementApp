@@ -11,11 +11,14 @@ import com.app.quantitymeasurement.security.oauth2.CustomOAuth2UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.app.quantitymeasurement.config.SecurityConfig;
 import com.app.quantitymeasurement.security.JwtUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.app.quantitymeasurement.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -48,6 +51,7 @@ class QuantityMeasurementControllerTest {
     private JwtUtils jwtUtils;
 
     @MockitoBean
+    @MockBean
     private IQuantityMeasurementService service;
 
     @Autowired
