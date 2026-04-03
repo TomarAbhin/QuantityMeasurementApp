@@ -1,7 +1,5 @@
 package com.app.quantitymeasurement;
 
-import com.app.quantitymeasurement.dto.*;
-import org.junit.jupiter.api.*;
 import com.app.quantitymeasurement.dto.QuantityDTO;
 import com.app.quantitymeasurement.dto.QuantityInputDTO;
 import com.app.quantitymeasurement.dto.QuantityMeasurementDTO;
@@ -27,38 +25,6 @@ class QuantityMeasurementAppApplicationTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private static String token;
-
-    @BeforeEach
-    void setUp() {
-        if (token == null) {
-            // Register
-            SignupRequest signup = new SignupRequest();
-            signup.setUsername("testuser");
-            signup.setEmail("test@example.com");
-            signup.setPassword("password");
-            restTemplate.postForEntity("/api/auth/signup", signup, MessageResponse.class);
-
-            // Login
-            LoginRequest login = new LoginRequest();
-            login.setUsername("testuser");
-            login.setPassword("password");
-            ResponseEntity<JwtResponse> loginResponse = restTemplate.postForEntity("/api/auth/signin", login, JwtResponse.class);
-            if (loginResponse.getStatusCode().is2xxSuccessful()) {
-                JwtResponse body = java.util.Objects.requireNonNull(loginResponse.getBody());
-                token = body.getToken();
-            }
-        }
-    }
-
-    private HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        if (token != null) {
-            headers.setBearerAuth(token);
-        }
-        return headers;
-    }
-
     // ── Helper ──────────────────────────────────────────────────────────
 
     private QuantityInputDTO createInput(double val1, String unit1, String type1,
@@ -83,9 +49,6 @@ class QuantityMeasurementAppApplicationTests {
     void testCompareQuantities() {
         QuantityInputDTO input = createInput(1.0, "FEET", "LengthUnit", 12.0, "INCH", "LengthUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/compare", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/compare", input, QuantityMeasurementDTO.class);
 
@@ -103,9 +66,6 @@ class QuantityMeasurementAppApplicationTests {
     void testConvertQuantity() {
         QuantityInputDTO input = createInput(1.0, "FEET", "LengthUnit", 0.0, "INCH", "LengthUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/convert", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/convert", input, QuantityMeasurementDTO.class);
 
@@ -122,9 +82,6 @@ class QuantityMeasurementAppApplicationTests {
     void testAddQuantities() {
         QuantityInputDTO input = createInput(1.0, "FEET", "LengthUnit", 12.0, "INCH", "LengthUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/add", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/add", input, QuantityMeasurementDTO.class);
 
@@ -142,9 +99,6 @@ class QuantityMeasurementAppApplicationTests {
     void testSubtractQuantities() {
         QuantityInputDTO input = createInput(10.0, "FEET", "LengthUnit", 5.0, "FEET", "LengthUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/subtract", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/subtract", input, QuantityMeasurementDTO.class);
 
@@ -161,9 +115,6 @@ class QuantityMeasurementAppApplicationTests {
     void testDivideQuantities() {
         QuantityInputDTO input = createInput(10.0, "KILOGRAM", "WeightUnit", 5.0, "KILOGRAM", "WeightUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/divide", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/divide", input, QuantityMeasurementDTO.class);
 
@@ -180,7 +131,6 @@ class QuantityMeasurementAppApplicationTests {
     void testGetOperationHistory() {
         ResponseEntity<List<QuantityMeasurementDTO>> response = restTemplate.exchange(
                 "/api/v1/quantities/history/operation/compare",
-                HttpMethod.GET, new HttpEntity<>(getHeaders()),
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<QuantityMeasurementDTO>>() {});
 
@@ -196,7 +146,6 @@ class QuantityMeasurementAppApplicationTests {
     void testGetMeasurementsByType() {
         ResponseEntity<List<QuantityMeasurementDTO>> response = restTemplate.exchange(
                 "/api/v1/quantities/history/type/LengthUnit",
-                HttpMethod.GET, new HttpEntity<>(getHeaders()),
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<QuantityMeasurementDTO>>() {});
 
@@ -210,9 +159,6 @@ class QuantityMeasurementAppApplicationTests {
     @Test
     @Order(9)
     void testGetOperationCount() {
-        ResponseEntity<Long> response = restTemplate.exchange(
-                "/api/v1/quantities/count/compare",
-                HttpMethod.GET, new HttpEntity<>(getHeaders()), Long.class);
         ResponseEntity<Long> response = restTemplate.getForEntity(
                 "/api/v1/quantities/count/compare", Long.class);
 
@@ -228,9 +174,6 @@ class QuantityMeasurementAppApplicationTests {
     void testAddIncompatibleTypes_Returns400() {
         QuantityInputDTO input = createInput(1.0, "FEET", "LengthUnit", 1.0, "KILOGRAM", "WeightUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<Map> response = restTemplate.exchange(
-                "/api/v1/quantities/add", HttpMethod.POST, entity, Map.class);
         ResponseEntity<Map> response = restTemplate.postForEntity(
                 "/api/v1/quantities/add", input, Map.class);
 
@@ -244,7 +187,6 @@ class QuantityMeasurementAppApplicationTests {
     void testGetErrorHistory() {
         ResponseEntity<List<QuantityMeasurementDTO>> response = restTemplate.exchange(
                 "/api/v1/quantities/history/errored",
-                HttpMethod.GET, new HttpEntity<>(getHeaders()),
                 HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<QuantityMeasurementDTO>>() {});
 
@@ -272,9 +214,6 @@ class QuantityMeasurementAppApplicationTests {
     void testCompareWeightQuantities() {
         QuantityInputDTO input = createInput(1.0, "KILOGRAM", "WeightUnit", 1000.0, "GRAM", "WeightUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/compare", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/compare", input, QuantityMeasurementDTO.class);
 
@@ -289,9 +228,6 @@ class QuantityMeasurementAppApplicationTests {
     void testConvertTemperature() {
         QuantityInputDTO input = createInput(100.0, "CELSIUS", "TemperatureUnit", 0.0, "FAHRENHEIT", "TemperatureUnit");
 
-        HttpEntity<QuantityInputDTO> entity = new HttpEntity<>(input, getHeaders());
-        ResponseEntity<QuantityMeasurementDTO> response = restTemplate.exchange(
-                "/api/v1/quantities/convert", HttpMethod.POST, entity, QuantityMeasurementDTO.class);
         ResponseEntity<QuantityMeasurementDTO> response = restTemplate.postForEntity(
                 "/api/v1/quantities/convert", input, QuantityMeasurementDTO.class);
 
