@@ -1,0 +1,13 @@
+target/
+.git/
+.idea/
+.vscode/
+.settings/
+.project/
+.classpath/
+.metadata/
+.sonarlint/
+data/
+README.md
+Dockerfile
+.dockerignore
