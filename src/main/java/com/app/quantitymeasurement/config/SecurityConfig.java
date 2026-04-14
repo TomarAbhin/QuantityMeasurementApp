@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    
 
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
@@ -39,9 +38,9 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     public SecurityConfig(UserDetailsServiceImpl userDetailsService,
-                          AuthEntryPointJwt unauthorizedHandler,
-                          CustomOAuth2UserService customOAuth2UserService,
-                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
+            AuthEntryPointJwt unauthorizedHandler,
+            CustomOAuth2UserService customOAuth2UserService,
+            OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.customOAuth2UserService = customOAuth2UserService;
@@ -74,29 +73,26 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        
+
         // Hardcode all allowed origins directly
         configuration.setAllowedOrigins(Arrays.asList(
-            "https://quantix-frontend-phi.vercel.app",
-            "http://localhost:5173",
-            "http://localhost:5174",
-            "http://localhost:5175",
-            "http://localhost:3000"
-        ));
-        
+                "https://quantix-frontend-phi.vercel.app",
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:5175",
+                "http://localhost:3000"));
+
         configuration.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        ));
-        
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(Arrays.asList(
-            "Authorization",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Credentials"
-        ));
+                "Authorization",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -108,19 +104,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/v1/quantities/**").permitAll()
-                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
-                                .requestMatchers("/actuator/**").permitAll()
-                                .requestMatchers("/").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth2 -> oauth2
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/v1/quantities/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/login/oauth2/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/swagger-resources/**", "/webjars/**")
+                        .permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2.authorizationEndpoint(auth -> auth
+                        .baseUri("/oauth2/authorization"))
+                        .redirectionEndpoint(redir -> redir
+                                .baseUri("/login/oauth2/code/*"))
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                        .successHandler(oAuth2AuthenticationSuccessHandler)
-                );
+                        .successHandler(oAuth2AuthenticationSuccessHandler));
 
         // Fix H2 console frame options
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
