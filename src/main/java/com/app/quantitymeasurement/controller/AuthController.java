@@ -26,7 +26,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(
+    origins = {
+        "https://quantix-frontend-phi.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:3000"
+    },
+    allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
